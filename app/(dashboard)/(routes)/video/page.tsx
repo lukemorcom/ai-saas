@@ -14,9 +14,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Empty from "@/components/empty";
 import Loader from "@/components/loader";
+import { useProModal } from "@/app/hooks/use-pro-modal";
 
 export default function VideoPage() {
     const router = useRouter();
+    const modal = useProModal();
 
     const [video, setVideo] = useState<string>();
 
@@ -38,9 +40,10 @@ export default function VideoPage() {
             setVideo(response.data[0]);
 
             form.reset();
-        } catch (err) {
-            // TODO open PRO model
-            console.log(err);
+        } catch (err: any) {
+            if (err?.response?.status === 403) {
+                modal.onOpen();
+            }
         } finally {
             router.refresh();
         }

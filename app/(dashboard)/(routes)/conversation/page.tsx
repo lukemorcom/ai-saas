@@ -17,9 +17,11 @@ import Loader from "@/components/loader";
 import { cn } from "@/lib/utils";
 import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
+import { useProModal } from "@/app/hooks/use-pro-modal";
 
 export default function ConversationPage() {
     const router = useRouter();
+    const modal = useProModal();
 
     const [messages, setMessages] = useState<Array<any>>([]);
 
@@ -48,9 +50,10 @@ export default function ConversationPage() {
 
             setMessages((current) => [...current, userMessage, response.data]);
             form.reset();
-        } catch (err) {
-            // TODO open PRO model
-            console.log(err);
+        } catch (err: any) {
+            if (err?.response?.status === 403) {
+                modal.onOpen();
+            }
         } finally {
             router.refresh();
         }
