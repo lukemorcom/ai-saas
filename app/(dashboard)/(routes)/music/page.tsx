@@ -15,6 +15,7 @@ import { useState } from "react";
 import Empty from "@/components/empty";
 import Loader from "@/components/loader";
 import { useProModal } from "@/app/hooks/use-pro-modal";
+import { toast } from "react-hot-toast";
 
 export default function MusicPage() {
     const router = useRouter();
@@ -43,6 +44,8 @@ export default function MusicPage() {
         } catch (err: any) {
             if (err?.response?.status === 403) {
                 modal.onOpen();
+            } else {
+                toast.error("Something went wrong");
             }
         } finally {
             router.refresh();

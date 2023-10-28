@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
 import { useProModal } from "@/app/hooks/use-pro-modal";
+import { toast } from "react-hot-toast";
 
 export default function ConversationPage() {
     const router = useRouter();
@@ -53,6 +54,8 @@ export default function ConversationPage() {
         } catch (err: any) {
             if (err?.response?.status === 403) {
                 modal.onOpen();
+            } else {
+                toast.error("Something went wrong");
             }
         } finally {
             router.refresh();
